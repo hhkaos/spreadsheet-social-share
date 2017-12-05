@@ -62,30 +62,53 @@
         text-align: center;
         display: inline-block;
     }
+    .header{
+        background-color: #052942;
+    }
+    .header header, .header a{color:white;}
+    .header .top-nav-link:hover, .header .top-nav-link:focus{
+        color: white;
+        border-bottom-color: white;
+        text-decoration: none;
+    }
     </style>
 </head>
 <body>
-
+<div class="header trailer-1">
     <div class="grid-container">
         <div class="column-24">
+        <header class="top-nav-flex-title">
+
             <a href="#" class="top-nav-title">Social Networks Social Sharing Helper</a>
+        </header>
+            <nav class="top-nav-flex-list text-right" role="navigation" aria-labelledby="usernav">
+
+                <a class="top-nav-link" href="https://docs.google.com/spreadsheets/d/1wbm1YSi-fqRCP4o8eswzR8UTU17GIJnQRphAOLGtgRM/edit#gid=1995811734">Suggest more news</a>
+            </nav>
         </div>
+    </div>
+</div>
+
+    <div class="grid-container">
+
         <!--<div class="column-24">
             Filter by tags:
         </div>-->
-        <table class="modifier-class table-striped">
-            <thead>
-                <tr>
-                    <th class="text-center">Date</th>
-                    <th>News</th>
-                    <th class="text-center">Staff involved</th>
-                    <th class="text-center">Twitter</th>
-                    <th class="text-center">Linkedin</th>
-                    <th class="text-center">Facebook</th>
-                </tr>
-            </thead>
-            <tbody id="news"></tbody>
-        </table>
+        <div class="column-24">
+            <table class="modifier-class table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Date</th>
+                        <th>News</th>
+                        <th class="text-center">Staff involved</th>
+                        <th class="text-center">Twitter</th>
+                        <th class="text-center">Linkedin</th>
+                        <th class="text-center">Facebook</th>
+                    </tr>
+                </thead>
+                <tbody id="news"></tbody>
+            </table>
+        </div>
     </div>
 
     <div id="result"></div>
