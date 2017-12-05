@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Social Networks Social Sharing Helper</title>
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if IE]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
+    <![endif]-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-punk.min.css" />
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="js/tooltipster.bundle.min.js"></script>
+    <!-- In the head -->
+    <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-rc.8/css/calcite-web.min.css">
+
+    <!-- Just before end of body -->
+    <script src="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-rc.8/js/calcite-web.min.js"></script>
+    <script src="js/jsrender.min.js"></script>
+
+    <script>
+    window.onload = function () {
+        calcite.init();
+    };
+    </script>
+
+    <style type="text/css">
+    #tooltip_templates{display:none;}
+    .tooltip-style{
+        font-size: .9rem;
+        margin-top: .5rem;
+    }
+    .tooltip-style p{
+        margin-bottom: .5rem;
+    }
+    #news ul.mentions,
+    #news ul.mentions li{
+        margin:0;
+        color: rgb(0, 121, 193);
+        display: inline;
+    }
+    #news ul.mentions li{width:auto;}
+    .tooltip-style a{
+        color: #a5dcff;
+    }
+    .fa{
+        font-size: 1.3rem
+    }
+    .tooltip:after,.tooltip:before{
+        background: none;
+        border-bottom-color: transparent
+    }
+    .tooltip{
+        width: 45%;
+        text-align: center;
+        display: inline-block;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="grid-container">
+        <div class="column-24">
+            <a href="#" class="top-nav-title">Social Networks Social Sharing Helper</a>
+        </div>
+        <!--<div class="column-24">
+            Filter by tags:
+        </div>-->
+        <table class="modifier-class table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Date</th>
+                    <th>News</th>
+                    <th class="text-center">Staff involved</th>
+                    <th class="text-center">Twitter</th>
+                    <th class="text-center">Linkedin</th>
+                    <th class="text-center">Facebook</th>
+                </tr>
+            </thead>
+            <tbody id="news"></tbody>
+        </table>
+    </div>
+
+    <div id="result"></div>
+
+    <!--<div>
+    <em>Name:</em> {{:name}}
+    {{if showNickname && nickname}}
+    (Goes by <em>{{:nickname}}</em>)
+    {{/if}}
+    {{:mentions[#getIndex()]}}
+    {{:data["nombre"]}}
+</div>-->
+<div id="tooltip_templates"></div>
+
+<script id="staffTmpl" type="text/x-jsrender">
+<div id="{{:slugify}}" class="tooltip-style">
+    <p>{{:nombre}}<p>
+    <p><strong>Cargo<strong>: {{:cargo}}</p>
+    <p><strong>Redes<strong>:
+        {{if linkedin}}
+            <a href="{{:linkedin}}">Linkedin</a>
+        {{/if}}
+        {{if twitter}}
+            <a href="{{:twitter}}">Twitter</a>
+        {{/if}}
+</div>
+</script>
+
+<script id="theTmpl" type="text/x-jsrender">
+{{for msgs}}
+    <tr>
+        <td class="text-center">
+            {{:gsx$fecha.$t}}
+        </td>
+        <td>
+            <a href="{{:gsx$link.$t}}">{{:gsx$title.$t}}</a>
+        </td>
+        <td class="text-center">
+            <ul class="mentions">
+            {{for mentions}}
+                {{if #data}}
+                    <li class="tooltip" data-tooltip-content="#{{:slugify}}" aria-hidden="true">
+                        {{if #getIndex() > 0}}|{{/if}}
+                        {{:#data["nombre"]}}
+                    </li>
+                {{/if}}
+            {{/for}}
+            </ul>
+        </td>
+        <td class="text-center">
+            <a href="{{:newTwitterMsg}}" target="_blank">
+                <i class="fa fa-twitter-square" aria-hidden="true"></i>
+            </a>
+            {{if existingTwitterMsg}}
+            <a href="{{:existingTwitterMsg}}" target="_blank">
+                <i class="fa fa-retweet" aria-hidden="true"></i>
+            </a>
+            {{/if}}
+        </td>
+        <td class="text-center">
+            <a href="{{:newLinkedinMsg}}" target="_blank">
+                <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+            </a>
+            {{if existingLinkedinMsg}}
+            <a href="{{:existingLinkedinMsg}}" target="_blank">
+                <i class="fa fa-share" aria-hidden="true"></i>
+            </a>
+            {{/if}}
+        </td>
+        <td class="text-center">
+            <a href="{{:newFacebookMsg}}" target="_blank">
+                <i class="fa fa-facebook-square" aria-hidden="true"></i>
+            </a>
+            {{if existingFacebookMsg}}
+            <a href="{{:existingFacebookMsg}}" target="_blank">
+                <i class="fa fa-share" aria-hidden="true"></i>
+            </a>
+            {{/if}}
+        </td>
+    </tr>
+{{/for}}
+</script>
+
+<script>
+var staff;//, staff_involded = [];
+window.staff_involded=[];
+var staff_url = "https://spreadsheets.google.com/feeds/list/1fMgb6jByuCHbcqNKmMiyGJt8dLV5daER5pRI5SdMxjs/1/public/values?alt=json-in-script&callback=loadStaff";
+$.ajax({
+	url: staff_url,
+	jsonp: "loadStaff",
+	dataType: "jsonp",
+	data: {format: "json"}
+});
+
+
+function loadStaff(data){
+    staff = buildStaffHash(data);
+    console.log("staff=",staff);
+
+    var msgs_url = "https://spreadsheets.google.com/feeds/list/1wbm1YSi-fqRCP4o8eswzR8UTU17GIJnQRphAOLGtgRM/3/public/values?alt=json-in-script&callback=loadMsgs";
+    //"https://spreadsheets.google.com/feeds/list/" + parseSecond("id") + "/" + parseSecond("tab") + "/public/values?alt=json-in-script&callback=loadBadges";
+    $.ajax({
+    	url: msgs_url,
+    	jsonp: "loadMsgs",
+    	dataType: "jsonp",
+    	data: {format: "json"}
+    });
+}
+function buildStaffHash(data){
+    var staff = {};
+    data.feed.entry.forEach(function(elem){
+        staff[elem.gsx$nombre.$t] = {
+            slugify: slugify(elem.gsx$nombre.$t),
+            nombre: elem.gsx$nombre.$t,
+            cargo: elem.gsx$cargo.$t,
+            departamento: elem.gsx$departamento.$t,
+            linkedin: elem.gsx$linkedin.$t,
+            twitter: elem.gsx$twitter.$t
+        }
+    });
+
+    return staff;
+}
+
+function loadMsgs(data){
+    var msgs = data.feed.entry;//.slice(0,data.feed.entry.length);
+    console.log("msgs=",msgs);
+
+    msgs = parseMsgs(msgs);
+    window.msg=msgs;
+
+    //Render staff
+    var template = $.templates("#staffTmpl");
+
+    var htmlOutput = template.render(staff_involded);
+
+    $("#tooltip_templates").html(htmlOutput);
+
+    //Render msgs
+
+    var template = $.templates("#theTmpl");
+
+    var htmlOutput = template.render({
+        msgs: msgs,
+        staff: staff
+    });
+
+    $("#news").html(htmlOutput);
+
+    $('.tooltip').tooltipster({
+        theme: 'tooltipster-punk',
+        contentCloning: true,
+        interactive: true
+    });
+}
+
+function parseMsgs(msgs){
+    msgs.forEach(function(elem){
+        // Build Social links
+        elem.newTwitterMsg = buildTwitterMsg(elem);
+        elem.newLinkedinMsg = buildLinkedinMsg(elem);
+        elem.newFacebookMsg = buildFacebookMsg(elem);
+
+        elem.existingTwitterMsg = elem.gsx$rt.$t;
+        elem.existingLinkedinMsg = elem.gsx$linkedinmsg.$t;
+        elem.existingFacebookMsg = elem.gsx$fbmsg.$t;
+
+        // Load staff data
+        var mentions = elem.gsx$mencionar.$t.split(",");
+        elem.mentions = [];
+        mentions.forEach(function(name){
+            if(staff[name]){
+                elem.mentions.push(staff[name]);
+                staff_involded.push(staff[name]);
+            }
+        });
+    });
+
+    return msgs;
+}
+
+function buildTwitterMsg(elem){
+    var msg = "https://twitter.com/intent/tweet?";
+
+    msg += `text=${elem.gsx$twittertext.$t}`;
+    msg += `&url=${elem.gsx$twittertext.$t}`;
+    msg += `&hashtags=${elem.gsx$hashtags.$t}`;
+    msg += `&via=${elem.gsx$via.$t}`;
+
+    return msg;
+}
+function buildLinkedinMsg(elem){
+    var msg = "http://www.linkedin.com/shareArticle?mini=true";
+
+    msg += `&url=${elem.gsx$linkedinurl.$t}`;
+    msg += `&title=${elem.gsx$linkedintitle.$t}`;
+    msg += `&summary=${elem.gsx$summary.$t}`;
+
+    return msg;
+}
+function buildFacebookMsg(elem){
+    var msg = "http://www.facebook.com/share.php?";
+
+    msg += `u=${elem.gsx$fburl.$t}`;
+
+    return msg;
+}
+
+function slugify(text)
+{
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '_')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '_')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+</script>
+
+</body>
+</html>
