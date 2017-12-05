@@ -106,7 +106,17 @@
                         <th class="text-center">Facebook</th>
                     </tr>
                 </thead>
-                <tbody id="news"></tbody>
+                <tbody id="news">
+
+                    <tr>
+                        <td colspan="6">
+                            <div class="loader is-active padding-leader-3 padding-trailer-3">
+                              <div class="loader-bars"></div>
+                              <div class="loader-text">Loading...</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -326,6 +336,39 @@ function slugify(text)
     .replace(/^-+/, '')             // Trim - from start of text
     .replace(/-+$/, '');            // Trim - from end of text
 }
+
+var quotes = [
+    "Loading Data!",
+    "Just a second...",
+    "Building a cache...",
+    "Promise will be faster next time...",
+    "How's your day going?",
+    "Mine's been great, thanks for asking!",
+    "Still waiting huh?",
+    "Don't worry, the payoff will be huge!",
+    "Okay now even I'm getting impatient...",
+    "Seen any good movies lately?",
+    "Weather ok?",
+    "Ever thought about the universe and its elemental building blocks as a probabilistic distribution of stochastic events?",
+    "Yea me neither...",
+];
+
+var msgIndex = 0;
+var randomMessage = function(){
+
+    if($(".loader-text")){
+        setTimeout(function(){
+             var i = msgIndex % quotes.length;
+             $(".loader-text").text(quotes[i]);
+             msgIndex++;
+             randomMessage();
+        },2000);
+    }
+}
+
+$(".loader-text").text(quotes[msgIndex++]);
+randomMessage();
+
 </script>
 
 </body>
