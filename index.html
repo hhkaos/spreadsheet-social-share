@@ -304,7 +304,7 @@ function buildTwitterMsg(elem){
     var msg = "https://twitter.com/intent/tweet?";
 
     msg += `text=${elem.gsx$twittertext.$t}`;
-    msg += `&url=${elem.gsx$twitterurl}`;
+    msg += `&url=${elem.gsx$twitterurl.$t}`;
     msg += `&hashtags=${elem.gsx$hashtags.$t}`;
     msg += `&via=${elem.gsx$via.$t}`;
 
